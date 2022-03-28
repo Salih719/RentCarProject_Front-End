@@ -1,0 +1,12 @@
+.kart-resmi{
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+}
+
+.kücük-kart-resmi{
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+

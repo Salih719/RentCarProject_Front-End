@@ -1,0 +1,62 @@
+<div *ngIf="dataLoaded==false" class="spinner-border text-success" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+
+
+<div class="row">
+  <div class="col-md-3 d-inline-block">
+    <div class="container">
+      <div><app-brand (brandCategory2)="reciveCategory($event)" ></app-brand></div>
+      <br><br>
+      <div><app-color (colorCategory)="reciveColor($event)"></app-color></div>
+    </div>
+
+
+  </div>
+
+
+
+
+  <div class="col-md-9 d-inline-block container"  >
+
+    <div class="mb-3">
+      <label for="filterText" class="form-label">Ürün ara</label>
+      <input type="text" [(ngModel)]="filterText" class="form-control" id="filterText" placeholder="arama ifadesi giriniz">
+    </div>
+    <div *ngIf="filterText.length>2" class="alert alert-success">
+      {{filterText}} aradınız.
+    </div>
+
+
+    <div *ngIf="dataLoaded==true" >
+      <div *ngFor="let car of carcar |filterPipe:filterText |category:brandCategory |color:colorCategory  " class="card d-inline-block" style="width: 18rem;">
+
+        <a routerLink="/details/{{car.id}}"><img [src]="getImagePath(car.imagePath)" class="card-img-top kart-resmi" alt="..."></a>
+            <div class="card-body">
+              <h5 class="card-title abc">{{car.carName}}</h5>
+
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><p class="text-center">{{car.description}}</p></li>
+                    <li class="list-group-item"><div class="text-center">{{car.dailyPrice }} ₺</div></li>
+                    <li class="list-group-item"><div class="text-center">{{car.modelYear}}</div></li>
+                    <li class="list-group-item"><div class="text-center">{{car.isAvailable ? "Available" : "Not Available"}}</div></li>
+                    <br>
+                  </ul>
+
+
+              <a><button (click)="addToCart(car)" type="button" class="btn btn-success">Sepete ekle</button></a>
+              <a><button routerLink="/details/{{car.id}}"type="button" class="btn btn-primary mx-2">Detay Sayfası</button></a>
+            </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+
+
+

@@ -1,25 +1,85 @@
-
 <div *ngIf="dataLoaded==false" class="spinner-border text-success" role="status">
-    <span class="visually-hidden">Loading...</span>
+  <span class="visually-hidden">Loading...</span>
 </div>
 
-<table *ngIf="dataLoaded==true" class="table">
-<thead>
-    <tr>
-      <th>Id</th>
-      <th>Araba ismi</th>
-      <th>Marka</th>
-      <th>Model Yılı</th>
-      <th>Günlük ücreti</th>
-    </tr>
-  </thead>
-  <tr *ngFor="let car of cars">
-    <td>{{ car.id }}</td>
-    <td>{{ car.description }}</td>
-    <td>{{ car.carName }}</td>
-    <td>{{ car.modelYear }}</td>
-    <td>{{ car.dailyPrice }}</td>
 
-  </tr>
-</table>
+<div class="row">
+  <div class="col-md-3 d-inline-block">
+    <div class="container">
+      <div><app-brand (brandCategory2)="reciveCategory($event)" ></app-brand></div>
+      <br><br>
+      <div><app-color (colorCategory)="reciveColor($event)"></app-color></div>
+    </div>
+
+
+  </div>
+
+
+
+
+  <div class="col-md-9 d-inline-block container"  >
+
+    <div class="mb-3">
+      <label for="filterText" class="form-label">Ürün ara</label>
+      <input type="text" [(ngModel)]="filterText" class="form-control" id="filterText" placeholder="arama ifadesi giriniz">
+    </div>
+    <div *ngIf="filterText.length>2" class="alert alert-success">
+      {{filterText}} aradınız.
+    </div>
+
+
+    <div *ngIf="dataLoaded==true" >
+      <div *ngFor="let car of carcar |filterPipe:filterText |category:brandCategory |color:colorCategory  " class="card d-inline-block" style="width: 18rem;">
+
+        <a routerLink="/details/{{car.id}}"><img [src]="getImagePath(car.imagePath)" class="card-img-top kart-resmi" alt="..."></a>
+            <div class="card-body">
+              <h5 class="card-title abc">{{car.carName}}</h5>
+
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><p class="text-center">{{car.description}}</p></li>
+                    <li class="list-group-item"><div class="text-center">{{car.dailyPrice }} ₺</div></li>
+                    <li class="list-group-item"><div class="text-center">{{car.modelYear}}</div></li>
+                    <li class="list-group-item"><div class="text-center">{{car.isAvailable ? "Available" : "Not Available"}}</div></li>
+                    <br>
+                  </ul>
+
+
+              <a><button (click)="addToCart(car)" type="button" class="btn btn-success">Sepete ekle</button></a>
+              <a><button routerLink="/details/{{car.id}}"type="button" class="btn btn-primary mx-2">Detay Sayfası</button></a>
+            </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+
+<!--
+
+<div *ngFor="let car of cars |filterPipe:filterText" class="card" style="width: 18rem;">
+
+  <img src="../../../assets/img/{{car.imagePath}}" class="card-img-top">
+
+
+<div class="card-body">
+  <h5 class="card-title">{{car.carName |uppercase}}</h5>
+  <p class="card-text">{{car.dailyPrice |currency }} TL</p>
+  <p class="card-text">Kdv'li Fiyat {{car.dailyPrice |vatAdded:18 |currency }} TL</p>
+  <p class="card-text">{{car.brandName}}</p>
+  <p class="card-text">{{car.colorName}}</p>
+
+</div>
+</div> -->
+
+
+
+
+
+
+
+
 
